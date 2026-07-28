@@ -10,6 +10,11 @@ SEC_TICKER_DICTIONARY = "https://www.sec.gov/files/company_tickers.json"
 
 headers = {"User-Agent": "Ryan Smith FinancialDistressDashBoard ryanpasmith@gmail.com"}
 
+
+""" ================================================= 
+    Baseline Starting Nested Dictionary
+    =================================================
+"""
 ticker_dictionary = {
     "AAPL": {
         "cik": "",
@@ -27,6 +32,11 @@ ticker_dictionary = {
 
 # print(ticker_dictionary)
 
+""" ================================================= 
+    Get Dictionary From JSON & Convert to Pandas DF Then Loop Through Dictionary to Reconstruct Initial Empty Dictionary
+    With Filled CIK'S and Titles Per Company
+    =================================================
+"""
 data = requests.get(SEC_TICKER_DICTIONARY,headers=headers)
 converted = json.loads(data.text)
 
@@ -41,13 +51,28 @@ for key in ticker_dictionary:
 
 # print(ticker_dictionary)
 
+""" ================================================= 
+    Convert Baseline Link to Apple Link Using Constructed Nested Dictionary
+    =================================================
+"""
 financial_data_link = "https://data.sec.gov/api/xbrl/companyfacts/CIK" + str(ticker_dictionary.get("AAPL").get("cik")) +".json"
 # print(financial_data_link)
 
+""" ================================================= 
+    Get Apples Financial Data In One Giant Nested Dictionary
+    =================================================
+"""
 financial_data_apple = requests.get(financial_data_link,headers=headers)
 converted_financial_apple = json.loads(financial_data_apple.text)
-df_apple = pd.DataFrame(converted_financial_apple)
-print(df_apple)
+
+""" ================================================= 
+    Drill Down to Just Apples Assets and Put in Pandas DataFrame
+    =================================================
+"""
+converted_financial_apple.get("facts").get("us-gaap").get("Assets").get("units").get("USD")
+apple_assets_df = pd.DataFrame(converted_financial_apple)
+print(apple_assets_df)
+
 
 
 
