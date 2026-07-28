@@ -1,3 +1,4 @@
+from email import header
 from urllib.request import urlopen
 from pandas import DataFrame
 import requests
@@ -36,9 +37,21 @@ df = df.transpose()
 " cik_str ticker title - to know what we're looking to match on and pull"
 for key in ticker_dictionary:
     match = df[df["ticker"] == key]
-    ticker_dictionary.update({key :{ "cik" :match["cik_str"].iloc[0], "title" :match["title"].iloc[0]}})
+    ticker_dictionary.update({key :{ "cik" : str(match["cik_str"].iloc[0]).zfill(10), "title" : match["title"].iloc[0]}})
 
-print(ticker_dictionary)
+# print(ticker_dictionary)
+
+financial_data_link = "https://data.sec.gov/api/xbrl/companyfacts/CIK" + str(ticker_dictionary.get("AAPL").get("cik")) +".json"
+# print(financial_data_link)
+
+financial_data_apple = requests.get(financial_data_link,headers=headers)
+converted_financial_apple = json.loads(financial_data_apple.text)
+df_apple = pd.DataFrame(converted_financial_apple)
+print(df_apple)
+
+
+
+
 
     
         
