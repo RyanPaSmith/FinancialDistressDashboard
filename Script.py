@@ -1,6 +1,7 @@
 from email import header
 from operator import ne
 from urllib.request import urlopen
+from numpy import mean
 from pandas import DataFrame, col
 import requests
 import json
@@ -103,19 +104,43 @@ for key in ticker_dictionary:
         current_liabilties = converted_financial_data.get("facts").get("us-gaap").get("LiabilitiesCurrent").get("units").get("USD")
         stockholders_equity  = converted_financial_data.get("facts").get("us-gaap").get("StockholdersEquity").get("units").get("USD")
         net_income_loss = converted_financial_data.get("facts").get("us-gaap").get("NetIncomeLoss").get("units").get("USD")
-        print("All data pulled - sucessful")
+        print("All data pulled - successful")
     except:
         print("Error, one of the tags is not available")
         break
-    # converted_financial_data_dataframe = pd.DataFrame(assets)
-    # converted_financial_data_dataframe = converted_financial_data_dataframe.drop(columns = ['entityName'])
-    # print(converted_financial_data_dataframe)
+
     asset_dataframe = pd.DataFrame(assets)
     current_asset_dataframe = pd.DataFrame(current_assets)
     liability_dataframe = pd.DataFrame(liabilities)
     current_liabilities_Dataframe = pd.DataFrame(current_liabilties)
     stockholders_equity_dataframe = pd.DataFrame(stockholders_equity)
     net_income_loss_dataframe = pd.DataFrame(net_income_loss)
+    
+    """
+    ================================================= 
+    Current Ratio Calculation 
+    =================================================
+    """
+    # Returns about 15 billion in for current_ratio of Apple, 70 Billion for Microsoft and 7 million for Tesla
+    # This is just the mean value and should be done by row values per year  
+    print(current_asset_dataframe['val'].mean() - current_liabilities_Dataframe['val'].mean())
+    
+    
+    
+    """
+    ================================================= 
+    Debt-Equity Ratio 
+    =================================================
+    """
+    
+    # Returns 259.36 billion for Apple, 268.55 billion for Microsoft, 40.17 billion for Tesla 
+    # This is just the mean value and should be done by row values per year  
+    print(liability_dataframe['val'].mean() + stockholders_equity_dataframe['val'].mean())
+    
+
+    
+    
+    
     
     
     
