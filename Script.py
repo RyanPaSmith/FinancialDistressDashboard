@@ -5,6 +5,7 @@ import requests
 import json
 import pandas as pd
 
+# Original file for reference
 
 SEC_TICKER_DICTIONARY = "https://www.sec.gov/files/company_tickers.json"
 
