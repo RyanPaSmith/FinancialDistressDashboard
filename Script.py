@@ -1,6 +1,6 @@
 from email import header
 from urllib.request import urlopen
-from pandas import DataFrame
+from pandas import DataFrame, col
 import requests
 import json
 import pandas as pd
@@ -52,26 +52,61 @@ for key in ticker_dictionary:
 # print(ticker_dictionary)
 
 """ ================================================= 
-    Convert Baseline Link to Apple Link Using Constructed Nested Dictionary
+    Convert Baseline Link to Company Link Using Constructed Nested Dictionary
     =================================================
 """
-financial_data_link = "https://data.sec.gov/api/xbrl/companyfacts/CIK" + str(ticker_dictionary.get("AAPL").get("cik")) +".json"
-# print(financial_data_link)
+# financial_links = {
+#     "AAPL": {
+#         "link": "",
+#     },
+#     "MSFT": {
+#         "link": "",
+#     },
+#     "TSLA": {
+#         "link": "",
+#     }
+# }
 
-""" ================================================= 
-    Get Apples Financial Data In One Giant Nested Dictionary
-    =================================================
-"""
-financial_data_apple = requests.get(financial_data_link,headers=headers)
-converted_financial_apple = json.loads(financial_data_apple.text)
+# for key in ticker_dictionary:
+#     financial_links.update({key : {"link : " "https://data.sec.gov/api/xbrl/companyfacts/CIK" + str(ticker_dictionary.get(key).get("cik")) +".json"}})
+# print(financial_links)
 
-""" ================================================= 
-    Drill Down to Just Apples Assets and Put in Pandas DataFrame
-    =================================================
-"""
-converted_financial_apple.get("facts").get("us-gaap").get("Assets").get("units").get("USD")
-apple_assets_df = pd.DataFrame(converted_financial_apple)
-print(apple_assets_df)
+# """ ================================================= 
+#     Get All Companies Financial Info in Seperate Dictionaries
+#     =================================================
+# """
+# for key in financial_links:
+#     financial_data_ + financial_links.get(key) = requests.get(financial_links.get("link"),headers=headers)
+
+# # financial_data_all = requests.get(financial_links,headers=headers)
+# # converted_financial_apple = json.loads(financial_data_apple.text)
+
+# """ ================================================= 
+#     Drill Down to Just Assets and Put in Pandas DataFrame
+#     =================================================
+# """
+# # converted_financial_apple.get("facts").get("us-gaap").get("Assets").get("units").get("USD")
+# # apple_assets_df = pd.DataFrame(converted_financial_apple)
+# # # print(apple_assets_df.values)
+
+for key in ticker_dictionary:
+    company_cik = ticker_dictionary.get(key).get("cik")
+    company_financial_link = "https://data.sec.gov/api/xbrl/companyfacts/CIK" + company_cik +".json"
+    print(company_financial_link)
+    company_financial_data = requests.get(company_financial_link,headers = headers)
+    converted_financial_data = dict(json.loads(company_financial_data.text))
+    try:
+        assets = converted_financial_data.get("facts").get("us-gaap").get("Assets").get("units").get("USD")
+        liabilities = converted_financial_data.get("facts").get("us-gaap").get("true").get("units").get("USD")
+    except:
+        print("Error, one of the tags is not available")
+        break
+    # converted_financial_data_dataframe = pd.DataFrame(assets)
+    # converted_financial_data_dataframe = converted_financial_data_dataframe.drop(columns = ['entityName'])
+    # print(converted_financial_data_dataframe)
+    
+    
+    
 
 
 
