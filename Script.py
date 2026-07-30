@@ -1,4 +1,5 @@
 from email import header
+from operator import ne
 from urllib.request import urlopen
 from pandas import DataFrame, col
 import requests
@@ -97,13 +98,24 @@ for key in ticker_dictionary:
     converted_financial_data = dict(json.loads(company_financial_data.text))
     try:
         assets = converted_financial_data.get("facts").get("us-gaap").get("Assets").get("units").get("USD")
-        liabilities = converted_financial_data.get("facts").get("us-gaap").get("true").get("units").get("USD")
+        current_assets = converted_financial_data.get("facts").get("us-gaap").get("AssetsCurrent").get("units").get("USD")
+        liabilities = converted_financial_data.get("facts").get("us-gaap").get("Liabilities").get("units").get("USD")
+        current_liabilties = converted_financial_data.get("facts").get("us-gaap").get("LiabilitiesCurrent").get("units").get("USD")
+        stockholders_equity  = converted_financial_data.get("facts").get("us-gaap").get("StockholdersEquity").get("units").get("USD")
+        net_income_loss = converted_financial_data.get("facts").get("us-gaap").get("NetIncomeLoss").get("units").get("USD")
+        print("All data pulled - sucessful")
     except:
         print("Error, one of the tags is not available")
         break
     # converted_financial_data_dataframe = pd.DataFrame(assets)
     # converted_financial_data_dataframe = converted_financial_data_dataframe.drop(columns = ['entityName'])
     # print(converted_financial_data_dataframe)
+    asset_dataframe = pd.DataFrame(assets)
+    current_asset_dataframe = pd.DataFrame(current_assets)
+    liability_dataframe = pd.DataFrame(liabilities)
+    current_liabilities_Dataframe = pd.DataFrame(current_liabilties)
+    stockholders_equity_dataframe = pd.DataFrame(stockholders_equity)
+    net_income_loss_dataframe = pd.DataFrame(net_income_loss)
     
     
     
