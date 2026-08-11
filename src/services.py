@@ -36,7 +36,7 @@ for key in ticker_dictionary:
             
             filter_financial_dataframe = filter_financial_dataframe.sort_values(by = ["end", "filed"])
             
-            filter_financial_dataframe = filter_financial_dataframe.drop_duplicates(subset = "end", keep = "first", inplace = False, ignore_index = False)
+            filter_financial_dataframe = filter_financial_dataframe.drop_duplicates(subset = "end", keep = "first", inplace = False, ignore_index = True)
             
             company_financial_dataframes[tag] = filter_financial_dataframe
 
