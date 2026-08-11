@@ -26,7 +26,22 @@ def main():
                 organized_company_financials[key][fiscal_year][tag] = value
                 
                 
-    print(organized_company_financials.get("AAPL"))
+    # print(organized_company_financials.get("AAPL"))
+    
+    for key in organized_company_financials:
+        for year in organized_company_financials[key]:
+            year_assets = organized_company_financials[key][year]["Assets"]
+            year_current_assets = organized_company_financials[key][year]["AssetsCurrent"]
+            year_liabilities = organized_company_financials[key][year]["Liabilities"]
+            year_current_liabilities = organized_company_financials[key][year]["LiabilitiesCurrent"]
+            year_stockholders_equity = organized_company_financials[key][year]["StockholdersEquity"]
+            net_income_loss = organized_company_financials[key][year]["NetIncomeLoss"]
+            
+            current_ratio = year_current_assets / year_current_liabilities
+            
+            print(key,year, "current ratio = " , current_ratio)
+            
+    
                 
                 
             
