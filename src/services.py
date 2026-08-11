@@ -32,7 +32,11 @@ for key in ticker_dictionary:
             form = "10-K"
             fp = "FY"
             
-            filter_financial_dataframe = financial_dataframe.loc[(financial_dataframe["form"] == form) & (financial_dataframe["fp"] == fp)] 
+            filter_financial_dataframe = financial_dataframe.loc[(financial_dataframe["form"] == form) & (financial_dataframe["fp"] == fp)]
+            
+            filter_financial_dataframe = filter_financial_dataframe.sort_values(by = ["end", "filed"])
+            
+            filter_financial_dataframe = filter_financial_dataframe.drop_duplicates(subset = "end", keep = "first", inplace = False, ignore_index = False)
             
             company_financial_dataframes[tag] = filter_financial_dataframe
 
@@ -43,4 +47,4 @@ for key in ticker_dictionary:
     
     print("All data pulled - successful")
     
-    print(all_company_financial_dataframes.get("AAPL").get("Assets"))
+print(all_company_financial_dataframes.get("AAPL").get("Assets"))
