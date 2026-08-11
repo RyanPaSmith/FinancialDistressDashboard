@@ -7,7 +7,6 @@ headers = {"User-Agent": "Ryan Smith FinancialDistressDashBoard ryanpasmith@gmai
     Baseline Starting Nested Dictionary
     =================================================
 """
-
 ticker_dictionary = {
     "AAPL": {
         "cik": "",
@@ -23,4 +22,16 @@ ticker_dictionary = {
     }
 }
 
-# print(ticker_dictionary)
+
+""" ================================================= 
+    Financial Tags We Want to Pull From SEC Company Facts
+    =================================================
+"""
+financial_tags = [
+    "Assets",
+    "AssetsCurrent",
+    "Liabilities",
+    "LiabilitiesCurrent",
+    "StockholdersEquity",
+    "NetIncomeLoss"
+]
