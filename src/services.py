@@ -47,4 +47,4 @@ for key in ticker_dictionary:
     
     print("All data pulled - successful")
     
-print(all_company_financial_dataframes.get("AAPL").get("Assets"))
+# print(all_company_financial_dataframes.get("AAPL").get("Assets"))
