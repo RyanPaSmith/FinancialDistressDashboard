@@ -6,9 +6,7 @@ def main():
     organized_company_financials = {}
     
     for key in all_company_financial_dataframes:
-        
-        # print(key)
-        
+
         organized_company_financials[key] = {}
 
         company_financial_dataframes = all_company_financial_dataframes.get(key)
@@ -24,36 +22,43 @@ def main():
                     organized_company_financials[key][fiscal_year] = {}
                 
                 organized_company_financials[key][fiscal_year][tag] = value
-                
-                
-    # print(organized_company_financials.get("AAPL"))
     
     for key in organized_company_financials:
         for year in organized_company_financials[key]:
-            year_assets = organized_company_financials[key][year]["Assets"]
-            year_current_assets = organized_company_financials[key][year]["AssetsCurrent"]
-            year_liabilities = organized_company_financials[key][year]["Liabilities"]
-            year_current_liabilities = organized_company_financials[key][year]["LiabilitiesCurrent"]
-            year_stockholders_equity = organized_company_financials[key][year]["StockholdersEquity"]
-            net_income_loss = organized_company_financials[key][year]["NetIncomeLoss"]
             
-            current_ratio = year_current_assets / year_current_liabilities
-            
-            print(key,year, "current ratio = " , current_ratio)
-            
+            if "AssetsCurrent" in organized_company_financials.get(key).get(year).keys() and "LiabilitiesCurrent" in organized_company_financials.get(key).get(year).keys():
+                year_current_assets = organized_company_financials[key][year]["AssetsCurrent"]
+                year_current_liabilities = organized_company_financials[key][year]["LiabilitiesCurrent"]
     
+                current_ratio = year_current_assets / year_current_liabilities
                 
+                print(key,year, "current ratio = " , current_ratio)
                 
+            if "Liabilities" in organized_company_financials.get(key).get(year).keys() and "Assets" in organized_company_financials.get(key).get(year).keys():
+                            year_assets = organized_company_financials[key][year]["Assets"]
+                            year_liabilities = organized_company_financials[key][year]["Liabilities"]
+                
+                            debt_to_assets_ratio = year_liabilities / year_assets
+                            
+                            print(key,year, "debt to asset ratio = " , debt_to_assets_ratio)
+                            
+            if "Liabilities" in organized_company_financials.get(key).get(year).keys() and "StockholdersEquity" in organized_company_financials.get(key).get(year).keys():
+                                        year_liabilities = organized_company_financials[key][year]["Liabilities"]
+                                        year_stockholders_equity = organized_company_financials[key][year]["StockholdersEquity"]
+                            
+                                        debt_to_equity_ratio = year_liabilities / year_stockholders_equity
+                                        
+                                        print(key,year, "debt to equity ratio = " , debt_to_equity_ratio)
+                                        
+            if "NetIncomeLoss" in organized_company_financials.get(key).get(year).keys() and "Assets" in organized_company_financials.get(key).get(year).keys():
+                                                    year_net_income_loss = organized_company_financials[key][year]["NetIncomeLoss"]
+                                                    year_assets = organized_company_financials[key][year]["Assets"]
+                                        
+                                                    return_on_assets = year_net_income_loss / year_assets
+                                                    
+                                                    print(key,year, "return on assets ratio = " , return_on_assets)
+            else: 
+                print("Error", key ,"doesn't contain one of the values needed")
             
-        
-        # asset_dataframe = company_financial_dataframes.get("Assets")
-        # current_asset_dataframe = company_financial_dataframes.get("AssetsCurrent")
-        # liability_dataframe = company_financial_dataframes.get("Liabilities")
-        # current_liabilities_dataframe = company_financial_dataframes.get("LiabilitiesCurrent")
-        # stockholders_equity_dataframe = company_financial_dataframes.get("StockholdersEquity")
-        # net_income_loss_dataframe = company_financial_dataframes.get("NetIncomeLoss")
-
-        
-
 if __name__ == "__main__":
     main()
