@@ -53,8 +53,7 @@ def main():
                 ratios["current ratio"] = None
                 
             # print(calculated_financial_ratios)
-            
-            
+        
             """ 
             ================================================= 
             Calculate Debt-to-Assets Ratio
@@ -100,8 +99,7 @@ def main():
                 ratios["debt to equity"] = None
                 
             # print(calculated_financial_ratios)
-                                        
-                                        
+                                                                 
             """ 
             ================================================= 
             Calculate Return on Assets Ratio
@@ -124,8 +122,7 @@ def main():
                 ratios["return on assets"] = None
                 
             # print(calculated_financial_ratios)
-            
-            
+        
             """ 
             ================================================= 
             Calculate Working Capital Ratio
@@ -194,32 +191,6 @@ def main():
                 ratios["return on equity"] = None
                 
             # print(calculated_financial_ratios)
-            
-            
-            """ 
-            ================================================= 
-            Calculate Profit to Liabilities Ratio
-            =================================================
-            """                    
-                                                                                    
-            if "NetIncomeLoss" in organized_company_financials.get(key).get(year).keys() and "Liabilities" in organized_company_financials.get(key).get(year).keys():
-                                                            
-                year_net_income_loss = organized_company_financials[key][year]["NetIncomeLoss"]
-                year_liabilities = organized_company_financials[key][year]["Liabilities"]
-                                                                                    
-                profit_to_liabilities = year_net_income_loss / year_liabilities
-                                                            
-                calculated_financial_ratios.update({"ticker" : key , "year" : year, "ratios" : ratios})
-                ratios["profit to liabilities"] = profit_to_liabilities
-                                                                       
-            else: 
-                                                                       
-                calculated_financial_ratios.update({"ticker" : key , "year" : year, "ratios" : ratios})
-                ratios["profit to liabilities"] = None
-                            
-            # print(calculated_financial_ratios)
-            
-            
             
             """ 
             ================================================= 
