@@ -1,0 +1,217 @@
+SEC Financial Distress Dashboard Roadmap
+
+Overall Goal
+
+Build a dashboard that analyzes public companies using SEC financial data, SEC filing text, financial ratios, text-based risk features, machine learning models, and an interactive dashboard.
+
+The project should be built in stages. The goal is not to make the perfect version immediately, but to build a simple working version first and then improve it.
+
+Phase 1: Pick a Small Company List
+
+Start with 5 to 10 companies instead of trying to analyze hundreds right away.
+
+A good starting list could include companies like Apple, Microsoft, Tesla, Walmart, JPMorgan, Nvidia, Ford, Target, Bed Bath & Beyond, and Rite Aid.
+
+The goal is to have a mix of healthy companies and companies that have shown weaker financial performance or distress.
+
+The purpose of this phase is to create a small company list that can be used to test the full project pipeline.
+
+Phase 2: Connect Tickers to SEC Company IDs
+
+Each public company has a CIK number, which is the SEC’s company identifier.
+
+The project needs to connect each ticker symbol to its CIK number. For example, Apple’s ticker is AAPL, but the SEC identifies Apple using its CIK.
+
+The flow should be:
+
+Ticker to CIK to SEC filing data.
+
+The purpose of this phase is to make sure that given a ticker symbol, the project can find the correct company in SEC data.
+
+Phase 3: Pull Basic SEC Financial Data
+
+Use SEC data to collect structured financial statement information from public companies.
+
+The financial data should include items such as revenue, net income, assets, liabilities, current assets, current liabilities, operating cash flow, debt, and equity.
+
+The goal is to create a clean dataset by company and year.
+
+The table should eventually include columns like ticker, year, revenue, net income, assets, liabilities, current assets, current liabilities, and operating cash flow.
+
+At this stage, the project is mainly focused on collecting and organizing financial data.
+
+Phase 4: Calculate Financial Ratios
+
+Once the raw financial statement data is collected, calculate financial ratios that can help measure company health.
+
+Useful ratios could include current ratio, debt-to-assets, debt-to-equity, net margin, return on assets, revenue growth, net income growth, and operating cash flow coverage.
+
+For example, current ratio compares current assets to current liabilities. Debt-to-assets compares total liabilities to total assets. Net margin compares net income to revenue.
+
+The purpose of this phase is to turn raw financial statement numbers into useful features for analysis and machine learning.
+
+Phase 5: Find Each Company’s 10-K Filing
+
+Use SEC submissions data to identify each company’s recent 10-K filing.
+
+For each company, collect the ticker, CIK, filing date, form type, accession number, primary document name, and filing document link.
+
+The goal is to find the correct filing document that contains the company’s annual report text.
+
+The purpose of this phase is to locate the 10-K documents that will later be downloaded and analyzed.
+
+Phase 6: Download and Clean the 10-K Text
+
+Download the HTML version of each company’s 10-K filing and clean it into readable plain text.
+
+This is where the scraping or document parsing part of the project begins.
+
+The basic process is to download the filing document, remove HTML tags, remove extra spacing, clean the text, and save it.
+
+The cleaned text can be saved by company and year.
+
+At first, the goal is just to download and clean the whole filing. Do not worry about perfectly extracting specific sections yet.
+
+Phase 7: Extract Filing Sections
+
+After the full filing text is cleaned, try to extract specific sections from the 10-K.
+
+The most important sections to start with are Item 1A Risk Factors and Item 7 Management’s Discussion and Analysis.
+
+Item 1A usually contains the company’s major business, legal, market, operational, and financial risks.
+
+Item 7 usually contains management’s discussion of company performance, liquidity, capital resources, trends, and financial condition.
+
+This step can be challenging because companies do not always format filings exactly the same way.
+
+A simple first approach is to find where Item 1A starts and where Item 1B starts, then keep the text between them. For Item 7, find where Item 7 starts and where Item 7A starts, then keep the text between them.
+
+The purpose of this phase is to isolate the sections that are most useful for risk analysis.
+
+Phase 8: Create Simple Text-Based Risk Features
+
+Turn the filing text into numeric features that can be used in analysis and machine learning.
+
+Start with simple word-count features instead of advanced NLP.
+
+Possible risk terms could include debt, liquidity, default, bankruptcy, restructuring, impairment, lawsuit, litigation, uncertain, decline, loss, shortage, inflation, interest rate, and supply chain.
+
+Useful text features could include total word count, risk word count, risk words per 1,000 words, debt-related word count, liquidity-related word count, legal-risk word count, uncertainty word count, and negative word count.
+
+The purpose of this phase is to convert unstructured filing text into structured numeric features.
+
+Phase 9: Combine Financial Ratios and Text Features
+
+Merge the financial ratio dataset with the text feature dataset.
+
+The final dataset should include both financial data and filing language data.
+
+Example columns could include ticker, year, current ratio, debt-to-assets, net margin, revenue growth, risk words per 1,000 words, debt mentions, liquidity mentions, and uncertainty mentions.
+
+At this point, the project has a real data science dataset that combines structured financial information with unstructured text analysis.
+
+The purpose of this phase is to create one clean modeling table.
+
+Phase 10: Create a Simple Risk Label
+
+Create a financial distress label or risk tier for each company-year.
+
+Since the project may not have true bankruptcy or default labels at first, use a rule-based risk label for the first version.
+
+A simple system could assign risk points based on warning signs.
+
+For example, add risk points if net margin is negative, revenue growth is negative, debt-to-assets is high, current ratio is low, or risk language is above average.
+
+Then classify companies into low, medium, or high risk.
+
+For example, 0 to 1 warning signs could be low risk, 2 to 3 warning signs could be medium risk, and 4 or more warning signs could be high risk.
+
+This label will not be perfect, but it gives the project a starting point for modeling.
+
+The purpose of this phase is to create a target variable for machine learning.
+
+Phase 11: Train Basic Machine Learning Models
+
+Train classification models to predict financial distress risk.
+
+The target variable could be the risk tier, such as low, medium, or high risk.
+
+For a simpler first version, the target could be binary: high risk or not high risk.
+
+Possible models include logistic regression, decision tree, random forest, extra trees, XGBoost, LightGBM, and support vector machine.
+
+The models should be compared using metrics like accuracy, precision, recall, F1-score, ROC-AUC, and a confusion matrix.
+
+The purpose of this phase is to build models that use financial ratios and text features to predict company risk.
+
+Phase 12: Add Model Explanation
+
+Add explanations showing why a company was classified as risky or healthy.
+
+For the first version, use feature importance from a tree-based model like random forest or extra trees.
+
+Later, SHAP values could be added to explain individual predictions more clearly.
+
+The dashboard should be able to show the biggest risk drivers for a company.
+
+For example, it might say the main risk drivers are high debt-to-assets, negative revenue growth, elevated risk language, and increased liquidity mentions.
+
+The purpose of this phase is to make the model easier to understand and more useful.
+
+Phase 13: Build the Dashboard
+
+Use Streamlit for the first dashboard version.
+
+The dashboard should allow a user to select or search for a company.
+
+The dashboard could show the company’s risk tier, predicted risk probability, key financial ratios, revenue trend, net income trend, debt trend, risk language score, top risk themes, and model explanation.
+
+The goal is to make the project interactive and presentable.
+
+The dashboard should not just show raw numbers. It should explain what the model found and why the company may be considered low, medium, or high risk.
+
+Phase 14: Organize the GitHub Repository
+
+Organize the project so it looks clean and professional.
+
+The repository should have folders for raw data, processed data, filing text, notebooks, source code, saved models, and the dashboard app.
+
+The README file should explain the project goal, data sources, methods, models, dashboard features, and how to run the project.
+
+The purpose of this phase is to make the project easy to understand for someone viewing it on GitHub.
+
+Best Beginner Build Order
+
+Start by getting SEC financial data for one company, such as Apple.
+
+Then calculate financial ratios for that one company.
+
+Next, find Apple’s latest 10-K filing.
+
+Download and clean Apple’s filing text.
+
+Count basic risk words in Apple’s filing.
+
+Then repeat the same process for 5 companies.
+
+After that, combine the financial ratios and text features into one dataset.
+
+Then create simple low, medium, and high risk labels.
+
+Next, train a basic classification model.
+
+Finally, build a Streamlit dashboard.
+
+Start with a simple version that works, then improve it.
+
+Minimum Finished Version
+
+A strong minimum version would include 10 companies, SEC financial ratios, downloaded 10-K text, risk word counts, low/medium/high risk labels, a random forest model, a Streamlit dashboard, and a clean GitHub README.
+
+Strong Final Version
+
+A stronger final version would include 30 to 50 companies, multiple years of filings, financial ratio trends, Item 1A and Item 7 section extraction, NLP sentiment or uncertainty scores, multiple machine learning models, model comparison, SHAP explanations, an interactive dashboard, and a personal website project page.
+
+Simple Project Summary
+
+This project analyzes public company financial distress risk by combining structured SEC financial data with scraped 10-K filing text. It calculates financial ratios, extracts risk-language features from filing sections, trains classification models to estimate financial health risk, and displays the results in an interactive dashboard.
